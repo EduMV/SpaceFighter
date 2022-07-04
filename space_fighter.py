@@ -9,7 +9,7 @@ class SpaceFighter(tk.Tk):
         self.title("Jet Fighter")
         self.geometry(f"{self.width}x{self.height}")
 
-        self.canvas = tk.Canvas(self, bg="darkblue", width=self.width, height=self.height)
+        self.canvas = tk.Canvas(self, bg="#003b59", width=self.width, height=self.height)
         self.canvas.pack()
         self.s1 = Ship(self.canvas, "w_ship_sprites", 100, 500, 270)
         self.s2 = Ship(self.canvas, "b_ship_sprites", 700, 100, 90)
