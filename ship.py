@@ -7,7 +7,7 @@ import math
 import time
 
 class Ship:
-    def __init__(self, game, canvas, sprites_dir, x, y, ang):
+    def __init__(self, game, canvas, settings,sprites_dir, x, y, ang):
         self.sprites_dir = sprites_dir
         self.color = sprites_dir[0]
         self.current_sprite = 0
@@ -18,8 +18,8 @@ class Ship:
         self.ang = ang # ángulo inicial en sexagesimal
         self.prev_ang = ang
         self.current_rot = 0
-        self.v = 3 # multiplicador de velocidad de la nave
-        self.rot_v = 3
+        self.v = settings["velocity"] # multiplicador de velocidad de la nave
+        self.rot_v = settings["velocity"]
         self.r_filter = False
         # Sprite inicial -> 0
         self.set_sprite(0)
@@ -27,12 +27,12 @@ class Ship:
         # Cargar tkimg al canvas y guardar el objeto de canvas que lo representa
         self.el = self.canvas.create_image(x, y, image=self.tkimg)
 
-        self.cooldown = 0.8
+        self.cooldown = settings["cooldown"]
         self.i_t = 0
 
         self.hitbox = Hitbox(self.canvas, self, "ship")
         self.p_maxtime = 3
-        self.lives = 5
+        self.lives = settings["i_lives"]
         self.active = True
 
 
@@ -104,7 +104,6 @@ class Ship:
         # rotar mismo sprite
         self.animate_sprite()
 
-        
         x, y = self.get_position()
         self.delete()
         self.el = self.canvas.create_image(x, y, image=self.tkimg)
@@ -135,8 +134,11 @@ class Ship:
 
     def hit(self, ang):
         self.lives -= 1
-        #self.r_filter = True
-        #self.game.after(200, self.deac_r_filter)
+        if self.lives > 0:
+            self.r_filter = True
+            self.game.after(200, self.deac_r_filter)
+        else:
+            self.destroy(ang)
 
     def deac_r_filter(self):
         self.r_filter = False
@@ -163,7 +165,10 @@ class Ship:
         self.sp_lst.append(ShipPiece(self.game, self.canvas, ang, self.sprites_dir, 2, x, y))
         self.sp_lst.append(ShipPiece(self.game, self.canvas, ang - 30, self.sprites_dir, 3, x, y))
         self.active = False
+        font = ("Consolas", 40, "bold")
+        self.canvas.create_text(self.game.width/2, self.game.height/6, text="YOU WIN", font=font)
         self.game.after(1000, self.delete_pieces)
+        self.game.after(2000, self.game.stop)
 
     def delete_pieces(self):
         for piece in self.sp_lst:

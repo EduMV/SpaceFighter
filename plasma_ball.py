@@ -11,7 +11,7 @@ class PlasmaBall:
         self.canvas = canvas
         self.game = game
         self.img_ang = (360 - self.ang) - 90
-        self.v = 10
+        self.v = 10 if self.game.settings["velocity"] < 7 else 20
         self.i_t = time.time()
         self.img = Image.open(f"{self.color}_pball_sprites/{self.color}_pball{0}.png")
         self.tkimg = ImageTk.PhotoImage(self.img.rotate(self.img_ang))
