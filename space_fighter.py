@@ -7,11 +7,14 @@ class SpaceFighter(tk.Tk):
     i_lives_steps = [1, 3, 5, 10, 15, 20, 25, 30]
     velocity_steps = [1, 3, 5, 7, 10]
     cooldown_steps = [0.2, 0.4, 0.8, 1.0, 1.3, 1.5, 1.8]
+    
     def __init__(self):
         super().__init__()
         self.width = 800
         self.height = 600
         self.title("Space Fighter")
+        icon = tk.PhotoImage(file = "other_sprites/w_shipicon.png")
+        self.iconphoto(False, icon)
         self.geometry(f"{self.width}x{self.height}")
         self.settings={
             "i_lives": 5,
@@ -199,7 +202,7 @@ class SpaceFighter(tk.Tk):
         self.canvas.delete(self.s1_lives_text)
         self.canvas.delete(self.s2_lives_text)
         self.s1_lives_text = self.canvas.create_text(40, 20, text=str(self.s1.lives), font=font)
-        self.s1_lives_text = self.canvas.create_text(100, 20, text=str(self.s2.lives), font=font)
+        self.s2_lives_text = self.canvas.create_text(100, 20, text=str(self.s2.lives), font=font)
 
     def game_loop(self):
         if self.stop_game: return    

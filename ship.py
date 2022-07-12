@@ -145,7 +145,6 @@ class Ship:
 
     def apply_red_filter(self):
         width, height = self.img.size
-
         pixels = self.img.load()
 
         for py in range(height):
